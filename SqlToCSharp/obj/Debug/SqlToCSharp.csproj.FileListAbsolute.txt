@@ -1,0 +1,17 @@
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.csprojResolveAssemblyReference.cache
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.Forms.MainForm.resources
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.Properties.Resources.resources
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.UserControls.ClassSettings.resources
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.csproj.GenerateResource.Cache
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.csproj.CoreCompileInputs.cache
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\bin\Debug\SqlToCSharp.exe.config
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\bin\Debug\SqlToCSharp.exe
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\bin\Debug\SqlToCSharp.pdb
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.exe
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.pdb
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\bin\Debug\FastColoredTextBox.dll
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\bin\Debug\FastColoredTextBox.xml
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.Forms.FilterForm.resources
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.DBTreeView.resources
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.Forms.SQLConnectionForm.resources
+D:\Onedrive\Projects\SqlToCSharp\SqlToCSharp\obj\Debug\SqlToCSharp.Forms.ErrorReporterForm.resources
