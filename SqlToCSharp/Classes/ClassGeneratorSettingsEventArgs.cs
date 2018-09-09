@@ -3,7 +3,10 @@ using System;
 
 namespace SqlToCSharp.Classes
 {
-    public class ClassSettingsEventArgs : EventArgs
+    /// <summary>
+    /// Event Argument class for ClassGeneratorSettings user-control's Settings Changed event.
+    /// </summary>
+    public class ClassGeneratorSettingsEventArgs : EventArgs
     {
         public string ClassName { get; set; }
         public string Namespace { get; set; }

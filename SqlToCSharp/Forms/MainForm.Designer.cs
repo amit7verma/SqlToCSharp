@@ -42,7 +42,7 @@
             this.grpCSharpCode = new System.Windows.Forms.GroupBox();
             this.cSharpCodeControl = new FastColoredTextBoxNS.FastColoredTextBox();
             this.dbTreeView = new SqlToCSharp.DBTreeView();
-            this.creatorSettings = new SqlToCSharp.UserControls.ClassSettings();
+            this.creatorSettings = new SqlToCSharp.UserControls.ClassGeneratorSettings();
             this.topMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -215,7 +215,7 @@
             this.creatorSettings.Name = "creatorSettings";
             this.creatorSettings.Size = new System.Drawing.Size(254, 512);
             this.creatorSettings.TabIndex = 0;
-            this.creatorSettings.ClassSettingChangedEventHandler += new SqlToCSharp.UserControls.ClassSettings.ClassSettingsEventHandler(this.creatorSettings_ClassSettingChangedEventHandler);
+            this.creatorSettings.ClassGeneratorSettingsChangedEventHandler += new SqlToCSharp.UserControls.ClassGeneratorSettings.ClassGeneratorSettingsEventHandler(this.creatorSettings_ClassSettingChangedEventHandler);
             // 
             // MainForm
             // 
@@ -229,7 +229,6 @@
             this.Text = "Sql To C#";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.topMenuStrip.ResumeLayout(false);
             this.topMenuStrip.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -257,7 +256,7 @@
         private System.Windows.Forms.ToolStripMenuItem pocoGenerateMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private UserControls.ClassSettings creatorSettings;
+        private UserControls.ClassGeneratorSettings creatorSettings;
         private System.Windows.Forms.ToolStripMenuItem generateSimpleTypedDatatableToolStripMenuItem;
         private DBTreeView dbTreeView;
         private System.Windows.Forms.GroupBox grpCSharpCode;

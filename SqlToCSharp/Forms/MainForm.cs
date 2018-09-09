@@ -1,32 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using SqlToCSharp.UserControls;
-using SqlToCSharp.Classes;
+﻿using SqlToCSharp.Classes;
 using SqlToCSharp.Helpers;
+using SqlToCSharp.UserControls;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Windows.Forms;
 
 namespace SqlToCSharp.Forms
 {
+    /// <summary>
+    /// The Main form which contains all the features of Sql to C# code generator.
+    /// </summary>
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// C# Code generator base class.
+        /// </summary>
         CSharpCreatorBase creator = null;
+
+        /// <summary>
+        /// Dictionary of Database objects types and Database objects.
+        /// </summary>
         private Dictionary<string, List<string[]>> dbObjects = null;
 
+        /// <summary>
+        /// Default Contructor.
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
             grpCSharpCode.Visible = false;
         }
 
+        /// <summary>
+        /// Settings object.
+        /// </summary>
         CSharpSettings settings = null;
 
-        private void creatorSettings_ClassSettingChangedEventHandler(ClassSettings sender, ClassSettingsEventArgs e)
+        /// <summary>
+        /// Settings changed event handler.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Event Argument.</param>
+        private void creatorSettings_ClassSettingChangedEventHandler(ClassGeneratorSettings sender, ClassGeneratorSettingsEventArgs e)
         {
             if (settings != null)
                 settings = null;
@@ -46,6 +62,11 @@ namespace SqlToCSharp.Forms
             cSharpCodeControl.Text = code.ToString();
         }
 
+        /// <summary>
+        /// Load event handler of Main Form.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Event Argument.</param>
         private void MainForm_Load(object sender, EventArgs e)
         {
             try
@@ -67,10 +88,13 @@ namespace SqlToCSharp.Forms
             }
             catch (Exception ex)
             {
-                MessageHelper.ShowError(ex.Message, this);
+                ErrorViewerForm.ShowError(ex, this);
             }
         }
 
+        /// <summary>
+        /// Loads Database object types and Database object names to Dictionary object.
+        /// </summary>
         private void LoadData()
         {
             if (dbObjects != null)
@@ -99,6 +123,9 @@ namespace SqlToCSharp.Forms
 
         }
 
+        /// <summary>
+        /// Configures the form on load.
+        /// </summary>
         private void FormLoad()
         {
             LoadData();
@@ -107,6 +134,11 @@ namespace SqlToCSharp.Forms
             grpCSharpCode.Visible = false;
         }
 
+        /// <summary>
+        /// Database change menu-item click event handler.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Event Argument.</param>
         private void dbConnectionStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -124,9 +156,15 @@ namespace SqlToCSharp.Forms
             }
             catch (Exception ex)
             {
-                MessageHelper.ShowError(ex.Message, this);
+                ErrorViewerForm.ShowError(ex, this);
             }
         }
+
+        /// <summary>
+        /// Save to file menu-item click event handler.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Event Argument.</param>
         private void saveToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -135,10 +173,13 @@ namespace SqlToCSharp.Forms
             }
             catch (Exception ex)
             {
-                MessageHelper.ShowError(ex.Message, this);
+                ErrorViewerForm.ShowError(ex, this);
             }
         }
 
+        /// <summary>
+        /// Saves code to .cs file.
+        /// </summary>
         private void SaveCode()
         {
             var diagSave = new SaveFileDialog();
@@ -150,6 +191,11 @@ namespace SqlToCSharp.Forms
             }
         }
 
+        /// <summary>
+        /// Generate C# Class menu-item click event handler.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Event Argument.</param>
         private void pocoGenerateMenuItem_Click(object sender, EventArgs e)
         {
             grpCSharpCode.Text = "C# Class";
@@ -160,6 +206,11 @@ namespace SqlToCSharp.Forms
             creatorSettings.ApplySettings();
         }
 
+        /// <summary>
+        /// Generate Simple Typed Datatable menu-item click evennt handler.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Event Argument.</param>
         private void generateSimpleTypedDatatableToolStripMenuItem_Click(object sender, EventArgs e)
         {
             grpCSharpCode.Text = "Simple Typed Datatable";
@@ -170,7 +221,10 @@ namespace SqlToCSharp.Forms
             creatorSettings.ApplySettings();
         }
 
-
+        /// <summary>
+        /// Gets name of selected database object, without schema.
+        /// </summary>
+        /// <returns>Name of database object, without schema.</returns>
         private string GetSelectedDbItem()
         {
             if (dbTreeView.TreeView.SelectedNode == null)
@@ -183,6 +237,11 @@ namespace SqlToCSharp.Forms
 
             return string.Empty;
         }
+
+        /// <summary>
+        /// Gets schema name of selected database object.
+        /// </summary>
+        /// <returns>Schema name of selected database object.</returns>
         private string GetSelectedDbItemSchema()
         {
             if (dbTreeView.TreeView.SelectedNode == null)
@@ -192,6 +251,10 @@ namespace SqlToCSharp.Forms
             return item.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries)[0];
         }
 
+        /// <summary>
+        /// Gets database object type of selected database object.
+        /// </summary>
+        /// <returns>SQLHelper.DBObjectType</returns>
         private SQLHelper.DBObjectType GetDBObjectType()
         {
             var item = dbTreeView.TreeView.SelectedNode;
@@ -208,14 +271,6 @@ namespace SqlToCSharp.Forms
                 }
             }
             return SQLHelper.DBObjectType.None;
-        }
-
-        private void MainForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (cSharpCodeControl.Text.Trim().Length > 0 && e.Control && e.Control && e.KeyCode == Keys.S)
-            {
-                SaveCode();
-            }
-        }
+        }        
     }
 }

@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppStatic.cs" />
-    <Compile Include="Classes\ClassSettingsEventArgs.cs" />
+    <Compile Include="Classes\ClassGeneratorSettingsEventArgs.cs" />
     <Compile Include="Classes\ClrProperty.cs" />
     <Compile Include="Classes\CSharpClassCreator.cs" />
     <Compile Include="Classes\CSharpCreatorBase.cs" />
@@ -73,13 +73,13 @@
     <Compile Include="Classes\TypedDatatableCreator.cs" />
     <Compile Include="Enums\AllEnums.cs" />
     <Compile Include="Classes\ConnectionRequest.cs" />
-    <Compile Include="Extensions\StringArrayExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="Forms\ErrorReporterForm.cs">
+    <Compile Include="Forms\ErrorViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ErrorReporterForm.Designer.cs">
-      <DependentUpon>ErrorReporterForm.cs</DependentUpon>
+    <Compile Include="Forms\ErrorViewerForm.Designer.cs">
+      <DependentUpon>ErrorViewerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FilterForm.cs">
       <SubType>Form</SubType>
@@ -99,15 +99,14 @@
     <Compile Include="Forms\SQLConnectionForm.designer.cs">
       <DependentUpon>SQLConnectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\MessageHelper.cs" />
     <Compile Include="Helpers\SQLHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserControls\ClassSettings.cs">
+    <Compile Include="UserControls\ClassGeneratorSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\ClassSettings.Designer.cs">
-      <DependentUpon>ClassSettings.cs</DependentUpon>
+    <Compile Include="UserControls\ClassGeneratorSettings.Designer.cs">
+      <DependentUpon>ClassGeneratorSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DBTreeView.cs">
       <SubType>UserControl</SubType>
@@ -115,8 +114,8 @@
     <Compile Include="UserControls\DBTreeView.designer.cs">
       <DependentUpon>DBTreeView.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Forms\ErrorReporterForm.resx">
-      <DependentUpon>ErrorReporterForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ErrorViewerForm.resx">
+      <DependentUpon>ErrorViewerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FilterForm.resx">
       <DependentUpon>FilterForm.cs</DependentUpon>
@@ -137,8 +136,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UserControls\ClassSettings.resx">
-      <DependentUpon>ClassSettings.cs</DependentUpon>
+    <EmbeddedResource Include="UserControls\ClassGeneratorSettings.resx">
+      <DependentUpon>ClassGeneratorSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\DBTreeView.resx">
       <DependentUpon>DBTreeView.cs</DependentUpon>

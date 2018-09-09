@@ -1,6 +1,6 @@
 ﻿namespace SqlToCSharp.UserControls
 {
-    partial class ClassSettings
+    partial class ClassGeneratorSettings
     {
         /// <summary> 
         /// Required designer variable.
@@ -291,12 +291,12 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Class name: ";
             // 
-            // ClassSettings
+            // ClassGeneratorSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox3);
-            this.Name = "ClassSettings";
+            this.Name = "ClassGeneratorSettings";
             this.Size = new System.Drawing.Size(255, 373);
             this.Load += new System.EventHandler(this.ClassSettings_Load);
             this.groupBox3.ResumeLayout(false);

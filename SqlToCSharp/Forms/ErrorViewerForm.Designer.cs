@@ -1,6 +1,6 @@
 ﻿namespace SqlToCSharp.Forms
 {
-    partial class ErrorReporterForm
+    partial class ErrorViewerForm
     {
         /// <summary>
         /// Required designer variable.

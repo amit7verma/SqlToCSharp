@@ -5,6 +5,11 @@ namespace SqlToCSharp.Extensions
 {
     public static class TypeExtensions
     {
+        /// <summary>
+        /// Extension method on 'Type', which returns display name of a 'Type'.
+        /// </summary>
+        /// <param name="t">Instance of type 'Type'</param>
+        /// <returns>Display name of 'Type'.</returns>
         public static string GetDisplayName(this Type t)
         {
             if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))

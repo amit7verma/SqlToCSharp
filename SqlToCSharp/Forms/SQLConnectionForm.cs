@@ -5,14 +5,34 @@ using SqlToCSharp.Classes;
 
 namespace SqlToCSharp.Forms
 {
+    /// <summary>
+    /// Represents Form which will establish connection to Sql server database connnection.
+    /// </summary>
     public partial class SQLConnectionForm : Form
     {
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public SQLConnectionForm()
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Property of ConnectionRequest type.
+        /// </summary>
         public ConnectionRequest ConnReq { get; private set; }
+
+        /// <summary>
+        /// Represents whether connection was established.
+        /// </summary>
         public bool ConnectionSuccess { get; private set; }
+
+        /// <summary>
+        /// Form load event handler.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event argument</param>
         private void SQLConnectionForm_Load(object sender, EventArgs e)
         {
             ddlAuth.SelectedIndex = 0;
@@ -20,17 +40,32 @@ namespace SqlToCSharp.Forms
             ddlDb.Focus();
         }
 
+        /// <summary>
+        /// SelectedIndexChanged event handler for Authorization dropdownlist.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event argument</param>
         private void ddlAuth_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblUser.Enabled = txtUser.Enabled = lblPass.Enabled = txtPass.Enabled = (!(ddlAuth.SelectedIndex == 0));
         }
 
+        /// <summary>
+        /// Click event handler of Cancel button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event argument</param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
+        /// <summary>
+        /// Click event handler of Connect button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event argument</param>
         private void btnConnect_Click(object sender, EventArgs e)
         {
             ConnectionRequest req = null;
@@ -63,12 +98,17 @@ namespace SqlToCSharp.Forms
             catch (Exception ex)
             {
                 this.ConnectionSuccess = false;
-                ErrorReporterForm.ShowError(ex, this);
+                ErrorViewerForm.ShowError(ex, this);
                 ///MessageHelper.ShowError(ex.Message, this);
                 this.DialogResult = DialogResult.Cancel;
             }
         }
 
+        /// <summary>
+        /// Enter event handler of Database combobox.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event argument</param>
         private void ddlDb_Enter(object sender, EventArgs e)
         {
             try
@@ -81,10 +121,14 @@ namespace SqlToCSharp.Forms
             }
             catch (Exception ex)
             {
-                MessageHelper.ShowError(ex.Message, this);
+                ErrorViewerForm.ShowError(ex, this);
             }
         }
 
+        /// <summary>
+        /// Creates database connection from UI controls and tries to connect.
+        /// </summary>
+        /// <returns>Instance of ConnectionRequest type.</returns>
         private ConnectionRequest GetServerConnection()
         {
             ConnectionRequest serverConnReq = null;
@@ -93,14 +137,17 @@ namespace SqlToCSharp.Forms
             {
                 serverConnReq = new ConnectionRequest(txtServer.Text.Trim());
             }
+
             else
             {
                 serverConnReq = new ConnectionRequest(txtServer.Text.Trim(), txtUser.Text.Trim(), txtPass.Text.Trim());
             }
+
             if (!serverConnReq.TryConnect())
             {
                 throw new Exception("Sql Connection failed.");
             }
+
             return serverConnReq;
         }
     }

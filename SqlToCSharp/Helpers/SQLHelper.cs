@@ -6,8 +6,15 @@ using SqlToCSharp.Classes;
 
 namespace SqlToCSharp.Helpers
 {
+    /// <summary>
+    /// Helper class to help in Sql Server communication.
+    /// </summary>
     public class SQLHelper
     {
+
+        /// <summary>
+        /// Enum of Database object types.
+        /// </summary>
         public enum DBObjectType
         {
             None = -1,
@@ -17,18 +24,25 @@ namespace SqlToCSharp.Helpers
             StoredProcedure = 4,
             UserDefinedTableTypes = 8
         }
-        //private SqlConnection _sqlConn = null;
-        private string _dbConnString;
-        //protected virtual SqlConnection conn
-        //{
-        //    get { return _sqlConn; }
-        //    set { _sqlConn = value; }
-        //}
 
+        /// <summary>
+        /// Connection string to database.
+        /// </summary>
+        private string _dbConnString;
+
+        /// <summary>
+        /// Parametrised Contructor.
+        /// </summary>
+        /// <param name="dbConnString">Connection string to database.</param>
         public SQLHelper(string dbConnString)
         {
             _dbConnString = dbConnString;
         }
+
+        /// <summary>
+        /// Get list of Stored procedures from Sql Server database.
+        /// </summary>
+        /// <returns>List of string array; index 0 keeps schema name and index 1 has procedure name.</returns>
         public List<string[]> GetProcedures()
         {
             List<string[]> list = new List<string[]>();
@@ -65,6 +79,10 @@ namespace SqlToCSharp.Helpers
 
         }
 
+        /// <summary>
+        /// Get list of alll tables in the Sql Server database.
+        /// </summary>
+        /// <returns>List of string array; index 0 keeps schema names and index 1 has table names.</returns>
         public List<string[]> GetTables()
         {
             List<string[]> list = new List<string[]>();
@@ -99,6 +117,11 @@ namespace SqlToCSharp.Helpers
             }
             return list;
         }
+
+        /// <summary>
+        /// Get list of all user-defined table types in the Sql Server database.
+        /// </summary>
+        /// <returns>List of string array; index 0 keeps schema names and index 1 has user-defined table type names.</returns>
         public List<string[]> GetTableTypes()
         {
             List<string[]> list = new List<string[]>();
@@ -133,6 +156,11 @@ namespace SqlToCSharp.Helpers
             }
             return list;
         }
+
+        /// <summary>
+        /// Get list of all Views in the Sql Server database.
+        /// </summary>
+        /// <returns>List of string array; index 0 keeps schema names and index 1 has View names.</returns>
         public List<string[]> GetViews()
         {
             List<string[]> list = new List<string[]>();
@@ -169,6 +197,11 @@ namespace SqlToCSharp.Helpers
             }
             return list;
         }
+
+        /// <summary>
+        /// Get list of all User-defined Table valued functions in the Sql Server database.
+        /// </summary>
+        /// <returns>List of string array; index 0 keeps schema names and index 1 has User-defined Table valued function names.</returns>
         public List<string[]> GetTableValuedFunctions()
         {
             List<string[]> list = new List<string[]>();
@@ -207,6 +240,11 @@ namespace SqlToCSharp.Helpers
             }
             return list;
         }
+
+        /// <summary>
+        /// Get List of databases as per current server connection.
+        /// </summary>
+        /// <returns>List of databases.</returns>
         public List<string> GetDatabaseList()
         {
             List<string> list = new List<string>();
@@ -232,6 +270,13 @@ namespace SqlToCSharp.Helpers
             }
             return list;
         }
+
+        /// <summary>
+        /// Finds out whether specified Stored Procedure is encrypted or not in specified database.
+        /// </summary>
+        /// <param name="dbName">Database name.</param>
+        /// <param name="spName">Stored Procedure name.</param>
+        /// <returns>True if encrypted, else false.</returns>
         public bool IsEncrypted(string dbName, string spName)
         {
             string sql =
@@ -254,6 +299,12 @@ namespace SqlToCSharp.Helpers
             return returnVal;
         }
 
+        /// <summary>
+        /// Gets array of SqlColumn objects for specified schema and Stored procedure name.
+        /// </summary>
+        /// <param name="schema">Database schema name.</param>
+        /// <param name="dbObjectName">Stored Procedure name.</param>
+        /// <returns>Array of type SqlColumn.</returns>
         private SqlColumn[] GetSqlColumnsForStoredProcedure(string schema, string dbObjectName)
         {
             string sql = $"sp_describe_first_result_set N'{schema}.{dbObjectName}'";
@@ -289,6 +340,13 @@ namespace SqlToCSharp.Helpers
 
             return sqlColumns?.ToArray();
         }
+
+        /// <summary>
+        /// Gets array of SqlColumn objects for specified schema and Database object name i.e. Table, Views and Table-Valued function
+        /// </summary>
+        /// <param name="schema">Database schema name.</param>
+        /// <param name="dbObjectName">Name of Table, View or Table-Valued function</param>
+        /// <returns>Array of type SqlColumn.</returns>
         private SqlColumn[] GetSqlColumns(string schema, string dbObjectName)
         {
             string sql = $"sp_help '{schema}.{dbObjectName}'";
@@ -325,6 +383,12 @@ namespace SqlToCSharp.Helpers
             return sqlColumns?.ToArray();
         }
 
+        /// <summary>
+        /// Gets array of SqlColumn objects for specified schema and User-defined table type name.
+        /// </summary>
+        /// <param name="schema">Database schema name.</param>
+        /// <param name="dbObjectName">User-defined table type name.</param>
+        /// <returns>Array of type SqlColumn.</returns>
         private SqlColumn[] GetSqlColumnsForTableTypes(string schema, string dbObjectName)
         {
             string sql = @"
@@ -371,6 +435,13 @@ namespace SqlToCSharp.Helpers
             return sqlColumns?.ToArray();
         }
 
+        /// <summary>
+        /// Get array of ClrProperty from specified schema, database object and database object type.
+        /// </summary>
+        /// <param name="schema">Database schema.</param>
+        /// <param name="dbObjectName">Database object name.</param>
+        /// <param name="dbObjectType">Database object type name.</param>
+        /// <returns>Array of ClrProperty.</returns>
         public ClrProperty[] GetClrProperties(string schema, string dbObjectName, DBObjectType dbObjectType)
         {
             SqlColumn[] sqlColumns = null;
@@ -406,6 +477,12 @@ namespace SqlToCSharp.Helpers
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Get Clr Type from specified SqlType.
+        /// </summary>
+        /// <param name="sqlType">Object of type SqlDbType</param>
+        /// <param name="isNullable">Is this Sql type nullable.</param>
+        /// <returns></returns>
         public static Type GetClrType(SqlDbType sqlType, bool isNullable)
         {
             switch (sqlType)
@@ -476,5 +553,4 @@ namespace SqlToCSharp.Helpers
             }
         }
     }
-
 }

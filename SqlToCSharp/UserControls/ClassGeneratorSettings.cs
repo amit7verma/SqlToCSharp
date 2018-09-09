@@ -5,17 +5,36 @@ using System.Windows.Forms;
 
 namespace SqlToCSharp.UserControls
 {
-    public partial class ClassSettings : UserControl
+    /// <summary>
+    /// User-control to represent the settings, which is required to generate C# class.
+    /// </summary>
+    public partial class ClassGeneratorSettings : UserControl
     {
-        public delegate void ClassSettingsEventHandler(ClassSettings sender, ClassSettingsEventArgs e);
+        /// <summary>
+        /// The Event Handler delegate declaration.
+        /// </summary>
+        /// <param name="sender">sender of this event.</param>
+        /// <param name="e">Event argument of type ClassGeneratorSettingsEventArgs</param>
+        public delegate void ClassGeneratorSettingsEventHandler(ClassGeneratorSettings sender, ClassGeneratorSettingsEventArgs e);
 
-        public event ClassSettingsEventHandler ClassSettingChangedEventHandler;
+        /// <summary>
+        /// The Settings Changed event handler.
+        /// </summary>
+        public event ClassGeneratorSettingsEventHandler ClassGeneratorSettingsChangedEventHandler;
 
-        public ClassSettings()
+        /// <summary>
+        /// Default Constructor to ClassGeneratorSettings
+        /// </summary>
+        public ClassGeneratorSettings()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// The Load event handler of control.
+        /// </summary>
+        /// <param name="sender">The object which caused this event.</param>
+        /// <param name="e">The object of EventArgs type.</param>
         private void ClassSettings_Load(object sender, EventArgs e)
         {
             this.accessModifierControl.SelectedIndex = 0;
@@ -24,14 +43,22 @@ namespace SqlToCSharp.UserControls
             this.propsConventionControl.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Click event handler of Apply button.
+        /// </summary>
+        /// <param name="sender">The object which caused this event.</param>
+        /// <param name="e">The object of EventArgs type.</param>
         private void applyButton_Click(object sender, EventArgs e)
         {
             ApplySettings();
         }
 
+        /// <summary>
+        /// Applies the changes in settings by raising an SettingsChanged event. 
+        /// </summary>
         public void ApplySettings()
         {
-            ClassSettingsEventArgs settingEventArgs = new ClassSettingsEventArgs()
+            ClassGeneratorSettingsEventArgs settingEventArgs = new ClassGeneratorSettingsEventArgs()
             {
                 ClassName = classNameControl.Text.Trim(),
                 Namespace = namespaceControl.Text.Trim(),
@@ -45,8 +72,13 @@ namespace SqlToCSharp.UserControls
                 CustomLogicGetter = prependGetterControl.Text.Trim()
             };
 
-            ClassSettingChangedEventHandler(this, settingEventArgs);
+            ClassGeneratorSettingsChangedEventHandler(this, settingEventArgs);
         }
+
+        /// <summary>
+        /// Get the AccessModifiers enum from UI control. Default is 'public'.
+        /// </summary>
+        /// <returns>AccessModifiers enum</returns>
         private AccessModifiers GetAccessModifier()
         {
             switch (accessModifierControl.Text.Trim())
@@ -57,13 +89,13 @@ namespace SqlToCSharp.UserControls
                 default: return AccessModifiers.Public;
             }
         }
+
+        /// <summary>
+        /// Get MemberTypes enum from UI control, default is 'AutoProperties'.
+        /// </summary>
+        /// <returns>MemberTypes enum</returns>
         private MemberTypes GetMemberType()
-        {
-            /*
-                Auto-Implemented Properties
-                Fields encapsulated with Properties
-                Fields only
-             */
+        {            
             switch (membersTypeControl.Text.Trim())
             {
                 case "Auto-Implemented Properties": return MemberTypes.AutoProperties;
@@ -73,18 +105,19 @@ namespace SqlToCSharp.UserControls
             }
         }
 
+        /// <summary>
+        /// Get NamingConventions enum from ComboBox UI contol, defaukt is 'Custom'.
+        /// </summary>
+        /// <param name="comboBox">UI control of ComboBox type.</param>
+        /// <returns>NamingConventions enum</returns>
         private NamingConventions GetNamingConvention(ComboBox comboBox)
-        {
-            /*
-                Camel-Case
-                Pascal-Case
-             */
+        {            
             switch (comboBox.Text.Trim())
             {
                 case "Camel-Case": return NamingConventions.CamelCase;
                 case "Pascal-Case": return NamingConventions.PascalCase;
                 default: return NamingConventions.Custom;
             }
-        }       
+        }
     }
 }

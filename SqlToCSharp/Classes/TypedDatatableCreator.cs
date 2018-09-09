@@ -4,13 +4,26 @@ using System.Text;
 
 namespace SqlToCSharp.Classes
 {
+    /// <summary>
+    /// Class to create typed datatables.
+    /// </summary>
     public class TypedDatatableCreator : CSharpCreatorBase
     {
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public TypedDatatableCreator() { }
+
+        /// <summary>
+        /// Parametrized constructor.
+        /// </summary>
+        /// <param name="Settings">settings object.</param>
         public TypedDatatableCreator(CSharpSettings Settings):base(Settings)
         {
 
         }
+
+
         public override void WriteClass(ref StringBuilder classBuilder, ClrProperty[] properties)
         {
             if (Settings == null) return;
