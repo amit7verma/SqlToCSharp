@@ -3,7 +3,6 @@ using SqlToCSharp.Helpers;
 using SqlToCSharp.UserControls;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SqlToCSharp.Forms
