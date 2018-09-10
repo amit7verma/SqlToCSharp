@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using SqlToCSharp.Enums;
+using System;
 using System.Text;
-using System.Threading.Tasks;
-using SqlToCSharp.Enums;
 
 namespace SqlToCSharp.Classes
 {
+    /// <summary>
+    /// Base class for C# code generator.
+    /// </summary>
     public abstract class CSharpCreatorBase
     {
         protected int tabCount;
