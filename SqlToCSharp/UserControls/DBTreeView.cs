@@ -1,5 +1,6 @@
 ﻿using SqlToCSharp.Classes;
 using SqlToCSharp.Forms;
+using SqlToCSharp.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,16 @@ namespace SqlToCSharp
         /// Dictionary to cache the database objects.
         /// </summary>
         private Dictionary<string, List<string[]>> _dbObjects = null;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public event EventHandler GenerateCSharpClass;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public event EventHandler GenerateTypedDatatable;
 
         /// <summary>
         /// Server name of currennt database connection.
@@ -250,8 +261,16 @@ namespace SqlToCSharp
         /// <param name="e">event argument of this event.</param>
         private void copyNameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (tvDBItems != null && tvDBItems.SelectedNode != null)
-                Clipboard.SetText(tvDBItems.SelectedNode.Text);
+            try
+            {
+                if (tvDBItems != null && tvDBItems.SelectedNode != null)
+                    Clipboard.SetText(tvDBItems.SelectedNode.Text);
+            }
+            catch (Exception ex)
+            {
+                ErrorViewerForm.ShowError(ex, this);
+                throw;
+            }
         }
 
         /// <summary>
@@ -265,17 +284,22 @@ namespace SqlToCSharp
             {
                 if (e.Button == MouseButtons.Right)
                 {
+                    this.TreeView.SelectedNode = e.Node;
+
                     if (e.Node.Text.Trim().StartsWithAnItemInArray(filterableNodes))
                     {
                         filterSettingToolItem.Enabled = resetFilterToolItem.Enabled = true;
+                        generateCClassToolStripMenuItem.Enabled = generateSimpleTypedDatatableToolStripMenuItem.Enabled = false;
                     }
                     else if (e.Node.Parent != null && e.Node.Parent.Text.Trim().StartsWithAnItemInArray(filterableNodes))
                     {
                         filterSettingToolItem.Enabled = resetFilterToolItem.Enabled = false;
+                        generateCClassToolStripMenuItem.Enabled = generateSimpleTypedDatatableToolStripMenuItem.Enabled = true;
                     }
                     else
                     {
                         filterSettingToolItem.Enabled = resetFilterToolItem.Enabled = false;
+                        generateCClassToolStripMenuItem.Enabled = generateSimpleTypedDatatableToolStripMenuItem.Enabled = false;
                     }
                     cntxMenu.Show(tvDBItems, e.Location);
                 }
@@ -284,6 +308,68 @@ namespace SqlToCSharp
             {
                 ErrorViewerForm.ShowError(ex, this);
             }
+        }
+
+        /// <summary>
+        /// Gets name of selected database object, without schema.
+        /// </summary>
+        /// <returns>Name of database object, without schema.</returns>
+        public string GetSelectedDbItem()
+        {
+            if (this.TreeView.SelectedNode == null)
+                return string.Empty;
+
+            var item = this.TreeView.SelectedNode.Text.Trim();
+            var names = item.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            if (names.Length > 1)
+                return names[1];
+
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Gets schema name of selected database object.
+        /// </summary>
+        /// <returns>Schema name of selected database object.</returns>
+        public string GetSelectedDbItemSchema()
+        {
+            if (this.TreeView.SelectedNode == null)
+                return string.Empty;
+
+            var item = this.TreeView.SelectedNode.Text.Trim();
+            return item.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries)[0];
+        }
+
+        /// <summary>
+        /// Gets database object type of selected database object.
+        /// </summary>
+        /// <returns>DBObjectType</returns>
+        public DBObjectType GetDBObjectType()
+        {
+            var item = this.TreeView.SelectedNode;
+            if (item != null && item.Parent != null)
+            {
+                item = item.Parent;
+                switch (item.Text.Trim())
+                {
+                    case Constants.Tables: return DBObjectType.Table;
+                    case Constants.Views: return DBObjectType.Views;
+                    case Constants.TableValuedFunctions: return DBObjectType.Functions;
+                    case Constants.StoredProcedures: return DBObjectType.StoredProcedure;
+                    case Constants.UserDefinedTableTypes: return DBObjectType.UserDefinedTableTypes;
+                }
+            }
+            return DBObjectType.None;
+        }
+
+        private void generateCClassToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenerateCSharpClass(sender, e);
+        }
+
+        private void generateSimpleTypedDatatableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenerateTypedDatatable(sender, e);
         }
     }
 }

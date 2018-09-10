@@ -83,7 +83,7 @@
             // errorControl
             // 
             this.errorControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.errorControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.errorControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.errorControl.Location = new System.Drawing.Point(78, 0);
             this.errorControl.Name = "errorControl";
             this.errorControl.Padding = new System.Windows.Forms.Padding(10, 25, 10, 10);
@@ -100,7 +100,7 @@
             this.panel1.Size = new System.Drawing.Size(319, 81);
             this.panel1.TabIndex = 4;
             // 
-            // ErrorReporterForm
+            // ErrorViewerForm
             // 
             this.AcceptButton = this.close;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -112,7 +112,7 @@
             this.Controls.Add(this.moreDetails);
             this.Controls.Add(this.close);
             this.Controls.Add(this.splitter1);
-            this.Name = "ErrorReporterForm";
+            this.Name = "ErrorViewerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ErrorReporterForm";
             ((System.ComponentModel.ISupportInitialize)(this.imageControl)).EndInit();

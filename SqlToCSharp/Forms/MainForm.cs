@@ -30,6 +30,7 @@ namespace SqlToCSharp.Forms
         {
             InitializeComponent();
             grpCSharpCode.Visible = false;
+
         }
 
         /// <summary>
@@ -44,22 +45,35 @@ namespace SqlToCSharp.Forms
         /// <param name="e">Event Argument.</param>
         private void creatorSettings_ClassSettingChangedEventHandler(ClassGeneratorSettings sender, ClassGeneratorSettingsEventArgs e)
         {
-            if (settings != null)
-                settings = null;
+            try
+            {
+                if (settings != null)
+                    settings = null;
 
-            if (e.ClassName.Length == 0)
-                e.ClassName = GetSelectedDbItem();
+                if (e.ClassName.Length == 0)
+                    e.ClassName = dbTreeView.GetSelectedDbItem();
 
-            if (creator == null)
-                return;
+                if (creator == null)
+                    return;
 
-            grpCSharpCode.Visible = true;
-            settings = CSharpSettings.GetCSharpSettings(e);
-            creator.Settings = settings;
-            StringBuilder code = new StringBuilder();
-            SQLHelper sql = new SQLHelper(AppStatic.DBConnectionString);
-            creator.WriteClass(ref code, sql.GetClrProperties(GetSelectedDbItemSchema(), GetSelectedDbItem(), GetDBObjectType()));
-            cSharpCodeControl.Text = code.ToString();
+                grpCSharpCode.Visible = true;
+                settings = CSharpSettings.GetCSharpSettings(e);
+                SQLHelper sql = new SQLHelper(AppStatic.DBConnectionString);
+                var code = creator.GenerateCSharpCode(
+                    settings
+                    , sql.GetClrProperties(
+                        dbTreeView.GetSelectedDbItemSchema()
+                        , dbTreeView.GetSelectedDbItem()
+                        , dbTreeView.GetDBObjectType()
+                        )
+                    );
+                cSharpCodeControl.Text = code;
+                grpCSharpCode.Text = $"{grpCSharpCode.Text} ({settings.ClassName})";
+            }
+            catch (Exception ex)
+            {
+                ErrorViewerForm.ShowError(ex, this);
+            }
         }
 
         /// <summary>
@@ -198,12 +212,20 @@ namespace SqlToCSharp.Forms
         /// <param name="e">Event Argument.</param>
         private void pocoGenerateMenuItem_Click(object sender, EventArgs e)
         {
-            grpCSharpCode.Text = "C# Class";
-            if (creator != null)
-                creator = null;
+            try
+            {
+                grpCSharpCode.Text = "C# Class";
+                if (creator != null)
+                    creator = null;
 
-            creator = new CSharpClassCreator();
-            creatorSettings.ApplySettings();
+                creator = new CSharpClassCreator();
+                creatorSettings.ApplySettings();
+            }
+            catch (Exception ex)
+            {
+                ErrorViewerForm.ShowError(ex, this);
+                throw;
+            }
         }
 
         /// <summary>
@@ -213,64 +235,54 @@ namespace SqlToCSharp.Forms
         /// <param name="e">Event Argument.</param>
         private void generateSimpleTypedDatatableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            grpCSharpCode.Text = "Simple Typed Datatable";
-            if (creator != null)
-                creator = null;
-
-            creator = new TypedDatatableCreator();
-            creatorSettings.ApplySettings();
-        }
-
-        /// <summary>
-        /// Gets name of selected database object, without schema.
-        /// </summary>
-        /// <returns>Name of database object, without schema.</returns>
-        private string GetSelectedDbItem()
-        {
-            if (dbTreeView.TreeView.SelectedNode == null)
-                return string.Empty;
-
-            var item = dbTreeView.TreeView.SelectedNode.Text.Trim();
-            var names = item.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
-            if (names.Length > 1)
-                return names[1];
-
-            return string.Empty;
-        }
-
-        /// <summary>
-        /// Gets schema name of selected database object.
-        /// </summary>
-        /// <returns>Schema name of selected database object.</returns>
-        private string GetSelectedDbItemSchema()
-        {
-            if (dbTreeView.TreeView.SelectedNode == null)
-                return string.Empty;
-
-            var item = dbTreeView.TreeView.SelectedNode.Text.Trim();
-            return item.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries)[0];
-        }
-
-        /// <summary>
-        /// Gets database object type of selected database object.
-        /// </summary>
-        /// <returns>SQLHelper.DBObjectType</returns>
-        private SQLHelper.DBObjectType GetDBObjectType()
-        {
-            var item = dbTreeView.TreeView.SelectedNode;
-            if (item != null && item.Parent != null)
+            try
             {
-                item = item.Parent;
-                switch (item.Text.Trim())
+                grpCSharpCode.Text = "Simple Typed Datatable";
+                if (creator != null)
+                    creator = null;
+
+                creator = new TypedDatatableCreator();
+                creatorSettings.ApplySettings();
+            }
+            catch (Exception ex)
+            {
+                ErrorViewerForm.ShowError(ex, this);
+            }
+        }
+
+        private void dbTreeView_GenerateCSharpClass(object sender, EventArgs e)
+        {
+            pocoGenerateMenuItem_Click(sender, e);
+        }
+
+        private void dbTreeView_GenerateTypedDatatable(object sender, EventArgs e)
+        {
+            generateSimpleTypedDatatableToolStripMenuItem_Click(sender, e);
+        }
+
+        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cSharpCodeControl.SelectAll();
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cSharpCodeControl.Copy();
+        }
+
+        private void cSharpCodeControl_MouseClick(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (e.Button == MouseButtons.Right)
                 {
-                    case Constants.Tables: return SQLHelper.DBObjectType.Table;
-                    case Constants.Views: return SQLHelper.DBObjectType.Views;
-                    case Constants.TableValuedFunctions: return SQLHelper.DBObjectType.Functions;
-                    case Constants.StoredProcedures: return SQLHelper.DBObjectType.StoredProcedure;
-                    case Constants.UserDefinedTableTypes: return SQLHelper.DBObjectType.UserDefinedTableTypes;
+                    textBoxContextMenu.Show(cSharpCodeControl, e.Location);
                 }
             }
-            return SQLHelper.DBObjectType.None;
-        }        
+            catch (Exception ex)
+            {
+                ErrorViewerForm.ShowError(ex, this);
+            }
+        }
     }
 }

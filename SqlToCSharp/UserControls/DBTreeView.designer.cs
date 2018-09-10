@@ -34,6 +34,9 @@
             this.filterSettingToolItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetFilterToolItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.generateCClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateSimpleTypedDatatableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cntxMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,31 +56,53 @@
             this.cntxMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.filterSettingToolItem,
             this.resetFilterToolItem,
-            this.copyNameToolStripMenuItem});
+            this.copyNameToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.generateCClassToolStripMenuItem,
+            this.generateSimpleTypedDatatableToolStripMenuItem});
             this.cntxMenu.Name = "cntxMenu";
             this.cntxMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.cntxMenu.Size = new System.Drawing.Size(146, 70);
+            this.cntxMenu.Size = new System.Drawing.Size(250, 142);
             // 
             // filterSettingToolItem
             // 
             this.filterSettingToolItem.Name = "filterSettingToolItem";
-            this.filterSettingToolItem.Size = new System.Drawing.Size(145, 22);
+            this.filterSettingToolItem.Size = new System.Drawing.Size(180, 22);
             this.filterSettingToolItem.Text = "Filter Settings";
             this.filterSettingToolItem.Click += new System.EventHandler(this.filterSettingToolItem_Click);
             // 
             // resetFilterToolItem
             // 
             this.resetFilterToolItem.Name = "resetFilterToolItem";
-            this.resetFilterToolItem.Size = new System.Drawing.Size(145, 22);
+            this.resetFilterToolItem.Size = new System.Drawing.Size(180, 22);
             this.resetFilterToolItem.Text = "Reset Filter";
             this.resetFilterToolItem.Click += new System.EventHandler(this.resetFilterToolItem_Click);
             // 
             // copyNameToolStripMenuItem
             // 
             this.copyNameToolStripMenuItem.Name = "copyNameToolStripMenuItem";
-            this.copyNameToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.copyNameToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.copyNameToolStripMenuItem.Text = "Copy Name";
             this.copyNameToolStripMenuItem.Click += new System.EventHandler(this.copyNameToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // generateCClassToolStripMenuItem
+            // 
+            this.generateCClassToolStripMenuItem.Name = "generateCClassToolStripMenuItem";
+            this.generateCClassToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.generateCClassToolStripMenuItem.Text = "Generate &C# Class";
+            this.generateCClassToolStripMenuItem.Click += new System.EventHandler(this.generateCClassToolStripMenuItem_Click);
+            // 
+            // generateSimpleTypedDatatableToolStripMenuItem
+            // 
+            this.generateSimpleTypedDatatableToolStripMenuItem.Name = "generateSimpleTypedDatatableToolStripMenuItem";
+            this.generateSimpleTypedDatatableToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.generateSimpleTypedDatatableToolStripMenuItem.Text = "Generate Simple &Typed Datatable";
+            this.generateSimpleTypedDatatableToolStripMenuItem.Click += new System.EventHandler(this.generateSimpleTypedDatatableToolStripMenuItem_Click);
             // 
             // DBTreeView
             // 
@@ -98,5 +123,8 @@
         private System.Windows.Forms.ToolStripMenuItem filterSettingToolItem;
         private System.Windows.Forms.ToolStripMenuItem resetFilterToolItem;
         private System.Windows.Forms.ToolStripMenuItem copyNameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem generateCClassToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateSimpleTypedDatatableToolStripMenuItem;
     }
 }

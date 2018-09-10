@@ -1,6 +1,5 @@
 ﻿using SqlToCSharp.Extensions;
 using System;
-using System.Text;
 
 namespace SqlToCSharp.Classes
 {
@@ -10,120 +9,117 @@ namespace SqlToCSharp.Classes
     public class TypedDatatableCreator : CSharpCreatorBase
     {
         /// <summary>
-        /// Default constructor.
+        /// Generates C# code as per specified settings and properties.
         /// </summary>
-        public TypedDatatableCreator() { }
-
-        /// <summary>
-        /// Parametrized constructor.
-        /// </summary>
-        /// <param name="Settings">settings object.</param>
-        public TypedDatatableCreator(CSharpSettings Settings):base(Settings)
+        /// <param name="settings">C# generator settings</param>
+        /// <param name="properties">Array of ClrProperty type</param>
+        /// <returns>C# code body in string.</returns>
+        public override string GenerateCSharpCode(CSharpSettings settings, ClrProperty[] properties)
         {
-
-        }
-
-
-        public override void WriteClass(ref StringBuilder classBuilder, ClrProperty[] properties)
-        {
-            if (Settings == null) return;
+            if (settings == null)
+                return string.Empty;
 
             if (properties == null)
-                return;
-            if (string.IsNullOrEmpty(Settings.ClassName))
-                return;
+                return string.Empty;
 
-            AppendLine(classBuilder,"using System;");
-            AppendLine(classBuilder,"using System.Data;");
-            AppendLine(classBuilder);
+            if (string.IsNullOrEmpty(settings.ClassName))
+                return string.Empty;
 
-            bool hasNamespace = !string.IsNullOrEmpty(Settings.Namespace);
+            AppendLine("using System;");
+            AppendLine("using System.Data;");
+            AppendLine();
+
+            bool hasNamespace = !string.IsNullOrEmpty(settings.Namespace);
             if (hasNamespace)
             {
-                AppendLine(classBuilder,$"namespace {Settings.Namespace}");
-                OpenCurlyBraces(classBuilder);
+                AppendLine($"namespace {settings.Namespace}");
+                OpenCurlyBraces();
             }
 
-            var modifier = Enum.GetName(typeof(Enums.AccessModifiers), Settings.AccessModifier).ToLower();
+            var modifier = Enum.GetName(typeof(Enums.AccessModifiers), settings.AccessModifier).ToLower();
             if (modifier.Length > 0)
                 modifier = modifier + " ";
 
-            AppendLine(classBuilder,$"{modifier}class {Settings.ClassName} : DataTable");
+            AppendLine($"{modifier}class {settings.ClassName} : DataTable");
 
             //Class opens
-            OpenCurlyBraces(classBuilder);
+            OpenCurlyBraces();
 
-            AppendLine(classBuilder,$"{modifier} {Settings.ClassName}()");
+            AppendLine($"{modifier} {settings.ClassName}()");
 
-            OpenCurlyBraces(classBuilder);
-            this.AppendLine(classBuilder,$"this.TableName = this.GetType().Name;");
+            OpenCurlyBraces();
+            this.AppendLine($"this.TableName = this.GetType().Name;");
             foreach (var p in properties)
             {
-                this.AppendLine(classBuilder,$"this.Columns.Add(\"{p.Name}\", typeof({p.PropertyType.GetDisplayName()}));");
+                this.AppendLine($"this.Columns.Add(\"{p.Name}\", typeof({p.PropertyType.GetDisplayName()}));");
             }
-            CloseCurlyBraces(classBuilder);
+            CloseCurlyBraces();
 
-            var rowClassName = $"{Settings.ClassName}Row";
+            var rowClassName = $"{settings.ClassName}Row";
 
-            this.AppendLine(classBuilder);
+            this.AppendLine();
 
-            this.AppendLine(classBuilder,$"protected override Type GetRowType()");
-            OpenCurlyBraces(classBuilder);
+            this.AppendLine($"protected override Type GetRowType()");
+            OpenCurlyBraces();
 
-            this.AppendLine(classBuilder,$"return typeof({rowClassName});");
-            CloseCurlyBraces(classBuilder);
+            this.AppendLine($"return typeof({rowClassName});");
+            CloseCurlyBraces();
 
-            this.AppendLine(classBuilder);
+            this.AppendLine();
 
-            this.AppendLine(classBuilder,$"public {rowClassName} this[int rowIndex]");
-            OpenCurlyBraces(classBuilder);
+            this.AppendLine($"public {rowClassName} this[int rowIndex]");
+            OpenCurlyBraces();
 
-            this.AppendLine(classBuilder,$"get {{ return ({rowClassName})Rows[rowIndex]; }}");
-            CloseCurlyBraces(classBuilder);
+            this.AppendLine($"get {{ return ({rowClassName})Rows[rowIndex]; }}");
+            CloseCurlyBraces();
 
-            this.AppendLine(classBuilder);
+            this.AppendLine();
 
-            this.AppendLine(classBuilder,$"public void AddRow({rowClassName} row)");
-            OpenCurlyBraces(classBuilder);
+            this.AppendLine($"public void AddRow({rowClassName} row)");
+            OpenCurlyBraces();
 
-            this.AppendLine(classBuilder,$"Rows.Add(row);");
-            CloseCurlyBraces(classBuilder);
+            this.AppendLine($"Rows.Add(row);");
+            CloseCurlyBraces();
 
-            this.AppendLine(classBuilder);
+            this.AppendLine();
 
-            this.AppendLine(classBuilder,$"public new {rowClassName} NewRow()");
-            OpenCurlyBraces(classBuilder);
+            this.AppendLine($"public new {rowClassName} NewRow()");
+            OpenCurlyBraces();
 
-            this.AppendLine(classBuilder,$"return ({rowClassName})base.NewRow();");
-            CloseCurlyBraces(classBuilder);
+            this.AppendLine($"return ({rowClassName})base.NewRow();");
+            CloseCurlyBraces();
 
             //table class closes here
-            CloseCurlyBraces(classBuilder);
+            CloseCurlyBraces();
 
-            this.AppendLine(classBuilder);
+            this.AppendLine();
 
             //Writing Row Class starts here
-            this.AppendLine(classBuilder,$"{modifier} class {rowClassName} : DataRow");
-            OpenCurlyBraces(classBuilder);
+            this.AppendLine($"{modifier} class {rowClassName} : DataRow");
+            OpenCurlyBraces();
 
 
             //Adding Constructor
-            this.AppendLine(classBuilder);
-            this.AppendLine(classBuilder,$"public {rowClassName}(DataRowBuilder rowBuilder) : base(rowBuilder) {{ }}");
-            this.AppendLine(classBuilder);
+            this.AppendLine();
+            this.AppendLine($"public {rowClassName}(DataRowBuilder rowBuilder) : base(rowBuilder) {{ }}");
+            this.AppendLine();
 
             //Adding Property accessors
             foreach (var p in properties)
             {
-                this.AppendLine(classBuilder,$"public {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, Settings.PropertiesNamingConvention, Settings.PropertiesPrefix)} {{ get => ({p.PropertyType.GetDisplayName()})this[\"{p.Name}\"]; set => this[\"{p.Name}\"] = value;}}");
-                this.AppendLine(classBuilder);
+                this.AppendLine($"public {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, settings.PropertiesNamingConvention, settings.PropertiesPrefix)} {{ get => ({p.PropertyType.GetDisplayName()})this[\"{p.Name}\"]; set => this[\"{p.Name}\"] = value;}}");
+                this.AppendLine();
             }
 
             //Row Class closes here
-            CloseCurlyBraces(classBuilder);
+            CloseCurlyBraces();
 
             if (hasNamespace)
-                CloseCurlyBraces(classBuilder);
+            {
+                CloseCurlyBraces();
+            }
+
+            return classBuilder.ToString();
         }
     }
 }

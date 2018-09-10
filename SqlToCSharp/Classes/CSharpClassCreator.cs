@@ -7,79 +7,83 @@ namespace SqlToCSharp.Classes
 {
     public class CSharpClassCreator : CSharpCreatorBase
     {
-        public CSharpClassCreator(CSharpSettings setting) : base(setting)
+        /// <summary>
+        /// Generates C# code as per specified settings and properties.
+        /// </summary>
+        /// <param name="settings">C# generator settings</param>
+        /// <param name="properties">Array of ClrProperty type</param>
+        /// <returns>C# code body in string.</returns>
+        public override string GenerateCSharpCode(CSharpSettings settings, ClrProperty[] properties)
         {
-
-        }
-        public CSharpClassCreator()
-        {
-        }
-
-
-        public override void WriteClass(ref StringBuilder classBuilder, ClrProperty[] properties)
-        {
-            if (Settings == null) return;
+            if (settings == null)
+                return string.Empty;
 
             if (properties == null)
-                return;
-            if (string.IsNullOrEmpty(Settings.ClassName))
-                return;
+                return string.Empty;
+
+            if (string.IsNullOrEmpty(settings.ClassName))
+                return string.Empty;
 
             classBuilder = new StringBuilder();
-            AppendLine(classBuilder, "using System;");
-            AppendLine(classBuilder);
 
-            bool hasNamespace = !string.IsNullOrEmpty(Settings.Namespace);
+            //Add usings 
+            AppendLine("using System;");
+            AppendLine();
+
+            bool hasNamespace = !string.IsNullOrEmpty(settings.Namespace);
+
+            //Add Namespace block if present.
             if (hasNamespace)
             {
-                AppendLine(classBuilder, $"namespace {Settings.Namespace}");
-                OpenCurlyBraces(classBuilder);
+                AppendLine( $"namespace {settings.Namespace}");
+                OpenCurlyBraces();
             }
 
-            var modifier = Enum.GetName(typeof(Enums.AccessModifiers), Settings.AccessModifier).ToLower();
+            var modifier = Enum.GetName(typeof(Enums.AccessModifiers), settings.AccessModifier).ToLower();
             if (modifier.Length > 0)
                 modifier = modifier + " ";
 
-            AppendLine(classBuilder, $"{modifier}class {Settings.ClassName}");
+            //Add class name
+            AppendLine( $"{modifier}class {settings.ClassName}");
 
             //Class opens
-            OpenCurlyBraces(classBuilder);
+            OpenCurlyBraces();
 
 
             bool firstProperty = true;
             foreach (var p in properties)
             {
-                switch (Settings.MemberType)
+                switch (settings.MemberType)
                 {
                     case MemberTypes.AutoProperties:
-                        AppendLine(classBuilder, $"{AccessModifiers.Public.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, Settings.PropertiesNamingConvention, Settings.PropertiesPrefix)} {{ get; set; }}");
+                        AppendLine( $"{AccessModifiers.Public.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, settings.PropertiesNamingConvention, settings.PropertiesPrefix)} {{ get; set; }}");
                         break;
                     case MemberTypes.FieldsOnly:
-                        AppendLine(classBuilder, $"{AccessModifiers.Private.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, Settings.FieldNamingConvention, Settings.FieldsPrefix)} {{ get; set; }}");
+                        AppendLine( $"{AccessModifiers.Private.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, settings.FieldNamingConvention, settings.FieldsPrefix)} {{ get; set; }}");
                         break;
                     case MemberTypes.FieldEncapsulatedByproperties:
                         if (!firstProperty)
                         {
-                            AppendLine(classBuilder);
+                            AppendLine();
                         }
-                        var fldName = GetNamePerConvention(p.Name, Settings.FieldNamingConvention, Settings.FieldsPrefix);
+                        var fldName = GetNamePerConvention(p.Name, settings.FieldNamingConvention, settings.FieldsPrefix);
 
-                        AppendLine(classBuilder, $"{AccessModifiers.Private.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {fldName};");
+                        AppendLine( $"{AccessModifiers.Private.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {fldName};");
 
-                        if (Settings.CustomLogicGetter.Length > 0 && Settings.CustomLogicSetter.Length > 0)
+                        if (settings.CustomLogicGetter.Length > 0 && settings.CustomLogicSetter.Length > 0)
                         {
-                            AppendLine(classBuilder, $"{AccessModifiers.Public.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, Settings.PropertiesNamingConvention, Settings.PropertiesPrefix)} {{ get {{{Settings.CustomLogicGetter}; return {fldName};}} set {{{Settings.CustomLogicSetter}; {fldName} = value;}} }}");
+                            AppendLine( $"{AccessModifiers.Public.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, settings.PropertiesNamingConvention, settings.PropertiesPrefix)} {{ get {{{settings.CustomLogicGetter}; return {fldName};}} set {{{settings.CustomLogicSetter}; {fldName} = value;}} }}");
                         }
-                        else if (Settings.CustomLogicGetter.Length > 0)
+                        else if (settings.CustomLogicGetter.Length > 0)
                         {
-                            AppendLine(classBuilder, $"{AccessModifiers.Public.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, Settings.PropertiesNamingConvention, Settings.PropertiesPrefix)} {{ get {{{Settings.CustomLogicGetter}; return {fldName};}} set => {fldName} = value; }}");
+                            AppendLine( $"{AccessModifiers.Public.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, settings.PropertiesNamingConvention, settings.PropertiesPrefix)} {{ get {{{settings.CustomLogicGetter}; return {fldName};}} set => {fldName} = value; }}");
                         }
-                        else if (Settings.CustomLogicSetter.Length > 0)
+                        else if (settings.CustomLogicSetter.Length > 0)
                         {
-                            AppendLine(classBuilder, $"{AccessModifiers.Public.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, Settings.PropertiesNamingConvention, Settings.PropertiesPrefix)} {{ get => {fldName}; set {{{Settings.CustomLogicSetter}; {fldName} = value;}} }}");
+                            AppendLine( $"{AccessModifiers.Public.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, settings.PropertiesNamingConvention, settings.PropertiesPrefix)} {{ get => {fldName}; set {{{settings.CustomLogicSetter}; {fldName} = value;}} }}");
                         }
                         else
-                            AppendLine(classBuilder, $"{AccessModifiers.Public.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, Settings.PropertiesNamingConvention, Settings.PropertiesPrefix)} {{ get => {fldName}; set => {fldName} = value; }}");
+                            AppendLine( $"{AccessModifiers.Public.ToString().ToLower()} {p.PropertyType.GetDisplayName()} {GetNamePerConvention(p.Name, settings.PropertiesNamingConvention, settings.PropertiesPrefix)} {{ get => {fldName}; set => {fldName} = value; }}");
 
                         break;
                 }
@@ -87,13 +91,13 @@ namespace SqlToCSharp.Classes
             }
 
             //Class closes
-            CloseCurlyBraces(classBuilder);
+            CloseCurlyBraces();
 
             if (hasNamespace)
             {
-                CloseCurlyBraces(classBuilder);
+                CloseCurlyBraces();
             }
-
+            return base.classBuilder.ToString();
         }
     }
 }

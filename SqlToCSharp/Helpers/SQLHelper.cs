@@ -1,8 +1,9 @@
-﻿using System;
+﻿using SqlToCSharp.Classes;
+using SqlToCSharp.Enums;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using SqlToCSharp.Classes;
 
 namespace SqlToCSharp.Helpers
 {
@@ -11,20 +12,6 @@ namespace SqlToCSharp.Helpers
     /// </summary>
     public class SQLHelper
     {
-
-        /// <summary>
-        /// Enum of Database object types.
-        /// </summary>
-        public enum DBObjectType
-        {
-            None = -1,
-            Table = 0,
-            Views = 1,
-            Functions = 2,
-            StoredProcedure = 4,
-            UserDefinedTableTypes = 8
-        }
-
         /// <summary>
         /// Connection string to database.
         /// </summary>
@@ -363,6 +350,7 @@ namespace SqlToCSharp.Helpers
                     da.Fill(ds);
                 }
             }
+
             if (ds.Tables.Count > 2 && ds.Tables[1].Rows.Count > 0)
             {
                 DataTable dataTable = ds.Tables[1];
@@ -374,13 +362,45 @@ namespace SqlToCSharp.Helpers
                         {
                             Name = dr[0].ToString(),
                             IsNullable = dr[6].ToString() == "yes" ? true : false,
-                            SqlType = (SqlDbType)Enum.Parse(typeof(SqlDbType), dr[1].ToString(), true)
+                            SqlType = GetSqlDbType(dr[1].ToString())
                         }
-                        );
+                    );
                 }
             }
 
             return sqlColumns?.ToArray();
+        }
+
+        /// <summary>
+        /// Get SqlDbType enum for specified sql db type name.
+        /// </summary>
+        /// <param name="sqlTypeName">The name of sql data type.</param>
+        /// <returns></returns>
+        private SqlDbType GetSqlDbType(string sqlTypeName)
+        {
+            sqlTypeName = sqlTypeName.ToLower(System.Globalization.CultureInfo.InvariantCulture);
+
+            if (Enum.TryParse(sqlTypeName, true, out SqlDbType sqlType))
+            {
+                return sqlType;
+            }
+            else
+            {
+                switch (sqlTypeName)
+                {
+                    case "sql_variant":
+                        return SqlDbType.Variant;
+                    case "numeric":
+                        return SqlDbType.Decimal;
+                    case "rowversion":
+                        return SqlDbType.Timestamp;
+                    case "smalldatetime":
+                        return SqlDbType.DateTime;
+
+                    default:
+                        throw new InvalidCastException($"Unable to cast '{sqlTypeName}' to appropriate SqlDbType enum.");
+                }
+            }
         }
 
         /// <summary>
