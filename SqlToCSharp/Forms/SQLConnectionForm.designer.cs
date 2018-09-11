@@ -227,7 +227,6 @@
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(352, 274);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "SQLConnectionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sql Server Database Connection";

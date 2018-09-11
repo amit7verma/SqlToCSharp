@@ -3,6 +3,7 @@ using System;
 using System.Windows.Forms;
 using SqlToCSharp.Classes;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace SqlToCSharp.Forms
 {
@@ -32,9 +33,11 @@ namespace SqlToCSharp.Forms
             var form = new ErrorViewerForm();
             form.exWrapper = new ExceptionWrapper(ex);
             form.Text = $"Error - {parent.Text}";
-            form.imageControl.Image = Resources.error_48;
             form.errorControl.Text = ex.Message;
             form.moreDetails.Visible = true;
+            form.ShowIcon = true;
+            form.Icon = SystemIcons.Error;
+            form.pictureBox1.Image = SystemIcons.Error.ToBitmap();
             form.ShowDialog(parent);
         }
 
@@ -47,8 +50,9 @@ namespace SqlToCSharp.Forms
         {
             var form = new ErrorViewerForm();
             form.Text = $"Information - {parent.Text}";
-            form.imageControl.Image = Resources.Info_icon_48;
             form.errorControl.Text = message;
+            form.Icon = SystemIcons.Information;
+            form.pictureBox1.Image = SystemIcons.Information.ToBitmap();
             form.ShowDialog(parent);
         }
 
@@ -61,8 +65,9 @@ namespace SqlToCSharp.Forms
         {
             var form = new ErrorViewerForm();
             form.Text = $"Warning - {parent.Text}";
-            form.imageControl.Image = Resources.warning_48;
             form.errorControl.Text = message;
+            form.Icon = SystemIcons.Warning;
+            form.pictureBox1.Image = SystemIcons.Warning.ToBitmap();
             form.ShowDialog(parent);
         }
 
@@ -75,8 +80,9 @@ namespace SqlToCSharp.Forms
         {
             var form = new ErrorViewerForm();
             form.Text = $"Success - {parent.Text}";
-            form.imageControl.Image = Resources.ok_48;
             form.errorControl.Text = message;
+            form.Icon = Resources.ok;
+            form.pictureBox1.Image = Resources.ok.ToBitmap();
             form.ShowDialog(parent);
         }
 
@@ -98,6 +104,24 @@ namespace SqlToCSharp.Forms
                 var newSize = new Size((int)(this.Size.Width * 1.1), (int)(this.Size.Height * 1.1));
                 this.Size = newSize;
             }
+
+            this.MinimumSize = this.MaximumSize = this.Size;
+        }
+
+        private const int GWL_STYLE = -16;
+        private const int WS_CLIPSIBLINGS = 1 << 26;
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, EntryPoint = "SetWindowLong")]
+        public static extern IntPtr SetWindowLongPtr32(HandleRef hWnd, int nIndex, HandleRef dwNewLong);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, EntryPoint = "GetWindowLong")]
+        public static extern IntPtr GetWindowLong32(HandleRef hWnd, int nIndex);
+
+        protected override void OnLoad(EventArgs e)
+        {
+            int style = (int)((long)GetWindowLong32(new HandleRef(this, this.Handle), GWL_STYLE));
+            SetWindowLongPtr32(new HandleRef(this, this.Handle), GWL_STYLE, new HandleRef(null, (IntPtr)(style & ~WS_CLIPSIBLINGS)));
+
+            base.OnLoad(e);
         }
     }
 }
