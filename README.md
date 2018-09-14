@@ -1,5 +1,5 @@
 # Sql To C#
-Windows Desktop tool to generate C# classes for selected database item.
+Windows Desktop tool to generate C# classes for selected database tables, Views, functions, Stored Procedures etc.
 It can generate plain C# classes as well as simple typed datatables. 
 
 Currently following operations are supported:
