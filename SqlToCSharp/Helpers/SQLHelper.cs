@@ -319,7 +319,7 @@ namespace SqlToCSharp.Helpers
                         {
                             Name = dr[2].ToString(),
                             IsNullable = Convert.ToBoolean(dr[3]),
-                            SqlType = (SqlDbType)Enum.Parse(typeof(SqlDbType), dr[5].ToString().Split(new string[] { "(" }, StringSplitOptions.RemoveEmptyEntries)[0], true)
+                            SqlType = GetSqlDbType(dr[5].ToString().Split(new string[] { "(" }, StringSplitOptions.RemoveEmptyEntries)[0])
                         }
                         );
                 }
@@ -445,7 +445,7 @@ namespace SqlToCSharp.Helpers
                         new SqlColumn()
                         {
                             Name = dr[0].ToString(),
-                            SqlType = (SqlDbType)Enum.Parse(typeof(SqlDbType), dr[1].ToString(), true),
+                            SqlType = GetSqlDbType( dr[1].ToString()),
                             IsNullable = Convert.ToBoolean(dr[2])
                         }
                         );

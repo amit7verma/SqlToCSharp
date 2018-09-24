@@ -28,11 +28,11 @@ namespace SqlToCSharp.Forms
         /// </summary>
         /// <param name="ex">Exception object</param>
         /// <param name="parent">Parent control of the caller.</param>
-        public static void ShowError(Exception ex, Control parent)
+        public static void ShowError(Exception ex, Control parent = null)
         {
             var form = new ErrorViewerForm();
             form.exWrapper = new ExceptionWrapper(ex);
-            form.Text = $"Error - {parent.Text}";
+            form.Text = parent == null ? "Error -  Sql to C# Code generator" : $"Error - {parent.Text}";
             form.errorControl.Text = ex.Message;
             form.moreDetails.Visible = true;
             form.ShowIcon = true;

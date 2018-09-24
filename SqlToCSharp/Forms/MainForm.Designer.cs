@@ -38,16 +38,17 @@
             this.pocoGenerateMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateSimpleTypedDatatableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.grpCSharpCode = new System.Windows.Forms.GroupBox();
-            this.cSharpCodeControl = new FastColoredTextBoxNS.FastColoredTextBox();
             this.dbTreeView = new SqlToCSharp.DBTreeView();
-            this.creatorSettings = new SqlToCSharp.UserControls.ClassGeneratorSettings();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.cSharpCodeControl = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.classGeneratorSetting = new SqlToCSharp.UserControls.ClassGeneratorSettings();
             this.textBoxContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.saveToFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.topMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -57,9 +58,10 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.grpCSharpCode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cSharpCodeControl)).BeginInit();
             this.textBoxContextMenu.SuspendLayout();
+            this.tabControl.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // topMenuStrip
@@ -135,6 +137,17 @@
             this.splitContainer1.SplitterDistance = 164;
             this.splitContainer1.TabIndex = 1;
             // 
+            // dbTreeView
+            // 
+            this.dbTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dbTreeView.Location = new System.Drawing.Point(0, 0);
+            this.dbTreeView.Name = "dbTreeView";
+            this.dbTreeView.Size = new System.Drawing.Size(162, 512);
+            this.dbTreeView.TabIndex = 0;
+            this.dbTreeView.GenerateCSharpClass += new System.EventHandler(this.dbTreeView_GenerateCSharpClass);
+            this.dbTreeView.GenerateTypedDatatable += new System.EventHandler(this.dbTreeView_GenerateTypedDatatable);
+            this.dbTreeView.SelectedNodeChanged += new System.Windows.Forms.TreeViewEventHandler(this.dbTreeView_SelectedNodeChanged);
+            // 
             // splitContainer2
             // 
             this.splitContainer2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -145,26 +158,14 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.grpCSharpCode);
+            this.splitContainer2.Panel1.Controls.Add(this.tabControl);
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.creatorSettings);
+            this.splitContainer2.Panel2.Controls.Add(this.classGeneratorSetting);
             this.splitContainer2.Size = new System.Drawing.Size(732, 514);
             this.splitContainer2.SplitterDistance = 472;
             this.splitContainer2.TabIndex = 0;
-            // 
-            // grpCSharpCode
-            // 
-            this.grpCSharpCode.Controls.Add(this.cSharpCodeControl);
-            this.grpCSharpCode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpCSharpCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpCSharpCode.Location = new System.Drawing.Point(0, 0);
-            this.grpCSharpCode.Name = "grpCSharpCode";
-            this.grpCSharpCode.Size = new System.Drawing.Size(470, 512);
-            this.grpCSharpCode.TabIndex = 0;
-            this.grpCSharpCode.TabStop = false;
-            this.grpCSharpCode.Text = "grpCSharpCode";
             // 
             // cSharpCodeControl
             // 
@@ -193,7 +194,7 @@
             this.cSharpCodeControl.Language = FastColoredTextBoxNS.Language.CSharp;
             this.cSharpCodeControl.LeftBracket = '(';
             this.cSharpCodeControl.LeftBracket2 = '{';
-            this.cSharpCodeControl.Location = new System.Drawing.Point(3, 19);
+            this.cSharpCodeControl.Location = new System.Drawing.Point(3, 3);
             this.cSharpCodeControl.Name = "cSharpCodeControl";
             this.cSharpCodeControl.Paddings = new System.Windows.Forms.Padding(0);
             this.cSharpCodeControl.ReadOnly = true;
@@ -201,29 +202,19 @@
             this.cSharpCodeControl.RightBracket2 = '}';
             this.cSharpCodeControl.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.cSharpCodeControl.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("cSharpCodeControl.ServiceColors")));
-            this.cSharpCodeControl.Size = new System.Drawing.Size(464, 490);
+            this.cSharpCodeControl.Size = new System.Drawing.Size(456, 480);
             this.cSharpCodeControl.TabIndex = 1;
             this.cSharpCodeControl.Zoom = 100;
             this.cSharpCodeControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cSharpCodeControl_MouseClick);
             // 
-            // dbTreeView
+            // classGeneratorSetting
             // 
-            this.dbTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dbTreeView.Location = new System.Drawing.Point(0, 0);
-            this.dbTreeView.Name = "dbTreeView";
-            this.dbTreeView.Size = new System.Drawing.Size(162, 512);
-            this.dbTreeView.TabIndex = 0;
-            this.dbTreeView.GenerateCSharpClass += new System.EventHandler(this.dbTreeView_GenerateCSharpClass);
-            this.dbTreeView.GenerateTypedDatatable += new System.EventHandler(this.dbTreeView_GenerateTypedDatatable);
-            // 
-            // creatorSettings
-            // 
-            this.creatorSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.creatorSettings.Location = new System.Drawing.Point(0, 0);
-            this.creatorSettings.Name = "creatorSettings";
-            this.creatorSettings.Size = new System.Drawing.Size(254, 512);
-            this.creatorSettings.TabIndex = 0;
-            this.creatorSettings.ClassGeneratorSettingsChangedEventHandler += new SqlToCSharp.UserControls.ClassGeneratorSettings.ClassGeneratorSettingsEventHandler(this.creatorSettings_ClassSettingChangedEventHandler);
+            this.classGeneratorSetting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.classGeneratorSetting.Location = new System.Drawing.Point(0, 0);
+            this.classGeneratorSetting.Name = "classGeneratorSetting";
+            this.classGeneratorSetting.Size = new System.Drawing.Size(254, 512);
+            this.classGeneratorSetting.TabIndex = 0;
+            this.classGeneratorSetting.ClassGeneratorSettingsChangedEventHandler += new SqlToCSharp.UserControls.ClassGeneratorSettings.ClassGeneratorSettingsEventHandler(this.creatorSettings_ClassSettingChangedEventHandler);
             // 
             // textBoxContextMenu
             // 
@@ -261,6 +252,27 @@
             this.saveToFileToolStripMenuItem1.Text = "Save to file";
             this.saveToFileToolStripMenuItem1.Click += new System.EventHandler(this.saveToFileToolStripMenuItem_Click);
             // 
+            // tabControl
+            // 
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(470, 512);
+            this.tabControl.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.cSharpCodeControl);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(462, 486);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,9 +295,10 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.grpCSharpCode.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cSharpCodeControl)).EndInit();
             this.textBoxContextMenu.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -301,15 +314,16 @@
         private System.Windows.Forms.ToolStripMenuItem pocoGenerateMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private UserControls.ClassGeneratorSettings creatorSettings;
+        private UserControls.ClassGeneratorSettings classGeneratorSetting;
         private System.Windows.Forms.ToolStripMenuItem generateSimpleTypedDatatableToolStripMenuItem;
         private DBTreeView dbTreeView;
-        private System.Windows.Forms.GroupBox grpCSharpCode;
         private FastColoredTextBoxNS.FastColoredTextBox cSharpCodeControl;
         private System.Windows.Forms.ContextMenuStrip textBoxContextMenu;
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem saveToFileToolStripMenuItem1;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage tabPage1;
     }
 }

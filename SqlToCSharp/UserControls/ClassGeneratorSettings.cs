@@ -2,6 +2,7 @@
 using SqlToCSharp.Enums;
 using System;
 using System.Windows.Forms;
+using SqlToCSharp.Forms;
 
 namespace SqlToCSharp.UserControls
 {
@@ -95,7 +96,7 @@ namespace SqlToCSharp.UserControls
         /// </summary>
         /// <returns>MemberTypes enum</returns>
         private MemberTypes GetMemberType()
-        {            
+        {
             switch (membersTypeControl.Text.Trim())
             {
                 case "Auto-Implemented Properties": return MemberTypes.AutoProperties;
@@ -111,13 +112,31 @@ namespace SqlToCSharp.UserControls
         /// <param name="comboBox">UI control of ComboBox type.</param>
         /// <returns>NamingConventions enum</returns>
         private NamingConventions GetNamingConvention(ComboBox comboBox)
-        {            
+        {
             switch (comboBox.Text.Trim())
             {
                 case "Camel-Case": return NamingConventions.CamelCase;
                 case "Pascal-Case": return NamingConventions.PascalCase;
                 default: return NamingConventions.Custom;
             }
+        }
+
+        private void resetAction_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ResetSettingsToDefault();
+            }
+            catch (Exception ex)
+            {
+                ErrorViewerForm.ShowError(ex, this.Parent);
+            }
+        }
+
+        public void ResetSettingsToDefault()
+        {
+            classNameControl.Text = namespaceControl.Text = prependGetterControl.Text = prependSetterControl.Text = string.Empty;
+            accessModifierControl.SelectedIndex = membersTypeControl.SelectedIndex = fieldsConventionControl.SelectedIndex = propsConventionControl.SelectedIndex = 0;
         }
     }
 }

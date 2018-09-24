@@ -49,6 +49,7 @@
             this.tvDBItems.Name = "tvDBItems";
             this.tvDBItems.Size = new System.Drawing.Size(271, 565);
             this.tvDBItems.TabIndex = 1;
+            this.tvDBItems.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvDBItems_AfterSelect);
             this.tvDBItems.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvDBItems_NodeMouseClick);
             // 
             // cntxMenu
@@ -62,33 +63,33 @@
             this.generateSimpleTypedDatatableToolStripMenuItem});
             this.cntxMenu.Name = "cntxMenu";
             this.cntxMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.cntxMenu.Size = new System.Drawing.Size(250, 142);
+            this.cntxMenu.Size = new System.Drawing.Size(250, 120);
             // 
             // filterSettingToolItem
             // 
             this.filterSettingToolItem.Name = "filterSettingToolItem";
-            this.filterSettingToolItem.Size = new System.Drawing.Size(180, 22);
+            this.filterSettingToolItem.Size = new System.Drawing.Size(249, 22);
             this.filterSettingToolItem.Text = "Filter Settings";
             this.filterSettingToolItem.Click += new System.EventHandler(this.filterSettingToolItem_Click);
             // 
             // resetFilterToolItem
             // 
             this.resetFilterToolItem.Name = "resetFilterToolItem";
-            this.resetFilterToolItem.Size = new System.Drawing.Size(180, 22);
+            this.resetFilterToolItem.Size = new System.Drawing.Size(249, 22);
             this.resetFilterToolItem.Text = "Reset Filter";
             this.resetFilterToolItem.Click += new System.EventHandler(this.resetFilterToolItem_Click);
             // 
             // copyNameToolStripMenuItem
             // 
             this.copyNameToolStripMenuItem.Name = "copyNameToolStripMenuItem";
-            this.copyNameToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyNameToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
             this.copyNameToolStripMenuItem.Text = "Copy Name";
             this.copyNameToolStripMenuItem.Click += new System.EventHandler(this.copyNameToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(246, 6);
             // 
             // generateCClassToolStripMenuItem
             // 

@@ -33,9 +33,9 @@
             this.close = new System.Windows.Forms.Button();
             this.moreDetails = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.moreDetailsToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.errorControl = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.errorControl = new System.Windows.Forms.TextBox();
+            this.moreDetailsToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -84,27 +84,30 @@
             this.panel1.Size = new System.Drawing.Size(383, 99);
             this.panel1.TabIndex = 4;
             // 
-            // errorControl
-            // 
-            this.errorControl.BackColor = System.Drawing.SystemColors.Control;
-            this.errorControl.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.errorControl.Dock = System.Windows.Forms.DockStyle.Right;
-            this.errorControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.errorControl.Location = new System.Drawing.Point(75, 8);
-            this.errorControl.Multiline = true;
-            this.errorControl.Name = "errorControl";
-            this.errorControl.Size = new System.Drawing.Size(300, 83);
-            this.errorControl.TabIndex = 0;
-            // 
             // pictureBox1
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox1.Location = new System.Drawing.Point(8, 8);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(57, 83);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
+            // 
+            // errorControl
+            // 
+            this.errorControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.errorControl.BackColor = System.Drawing.SystemColors.Control;
+            this.errorControl.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.errorControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.errorControl.Location = new System.Drawing.Point(75, 8);
+            this.errorControl.Multiline = true;
+            this.errorControl.Name = "errorControl";
+            this.errorControl.Size = new System.Drawing.Size(300, 83);
+            this.errorControl.TabIndex = 0;
             // 
             // ErrorViewerForm
             // 

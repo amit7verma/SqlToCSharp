@@ -31,6 +31,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.applyButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.resetAction = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.prependGetterControl = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -77,6 +78,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.resetAction);
             this.groupBox3.Controls.Add(this.groupBox2);
             this.groupBox3.Controls.Add(this.button1);
             this.groupBox3.Controls.Add(this.groupBox1);
@@ -88,6 +90,17 @@
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Settings";
+            // 
+            // resetAction
+            // 
+            this.resetAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.resetAction.Location = new System.Drawing.Point(8, 345);
+            this.resetAction.Name = "resetAction";
+            this.resetAction.Size = new System.Drawing.Size(52, 23);
+            this.resetAction.TabIndex = 14;
+            this.resetAction.Text = "&Reset";
+            this.resetAction.UseVisualStyleBackColor = true;
+            this.resetAction.Click += new System.EventHandler(this.resetAction_Click);
             // 
             // groupBox2
             // 
@@ -330,5 +343,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox classNameControl;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button resetAction;
     }
 }

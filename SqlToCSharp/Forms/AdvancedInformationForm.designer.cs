@@ -85,6 +85,7 @@
             // 
             // tvError
             // 
+            this.tvError.BackColor = System.Drawing.SystemColors.Control;
             this.tvError.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvError.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tvError.Location = new System.Drawing.Point(0, 0);
@@ -95,6 +96,7 @@
             // 
             // txtValue
             // 
+            this.txtValue.BackColor = System.Drawing.SystemColors.Window;
             this.txtValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtValue.Location = new System.Drawing.Point(0, 0);

@@ -226,8 +226,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(352, 274);
+            this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Name = "SQLConnectionForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sql Server Database Connection";
             this.Load += new System.EventHandler(this.SQLConnectionForm_Load);

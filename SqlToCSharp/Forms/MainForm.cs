@@ -28,7 +28,7 @@ namespace SqlToCSharp.Forms
         public MainForm()
         {
             InitializeComponent();
-            grpCSharpCode.Visible = false;
+            tabControl.Visible = false;
 
         }
 
@@ -55,7 +55,7 @@ namespace SqlToCSharp.Forms
                 if (creator == null)
                     return;
 
-                grpCSharpCode.Visible = true;
+                tabControl.Visible = true;
                 settings = CSharpSettings.GetCSharpSettings(e);
                 SQLHelper sql = new SQLHelper(AppStatic.DBConnectionString);
                 var code = creator.GenerateCSharpCode(
@@ -67,7 +67,7 @@ namespace SqlToCSharp.Forms
                         )
                     );
                 cSharpCodeControl.Text = code;
-                grpCSharpCode.Text = $"{grpCSharpCode.Text} ({settings.ClassName})";
+                tabPage1.Text = $"{tabPage1.Text.Split(new string[] { " (" }, StringSplitOptions.RemoveEmptyEntries)[0]} ({dbTreeView.GetSelectedNode()})";
             }
             catch (Exception ex)
             {
@@ -144,7 +144,7 @@ namespace SqlToCSharp.Forms
             LoadData();
             this.dbTreeView.LoadTreeView(this.dbObjects, AppStatic.Server, AppStatic.Database);
             creator = null;
-            grpCSharpCode.Visible = false;
+            tabControl.Visible = false;
         }
 
         /// <summary>
@@ -213,12 +213,12 @@ namespace SqlToCSharp.Forms
         {
             try
             {
-                grpCSharpCode.Text = "C# Class";
+                tabPage1.Text = "C# Class";
                 if (creator != null)
                     creator = null;
 
                 creator = new CSharpClassCreator();
-                creatorSettings.ApplySettings();
+                classGeneratorSetting.ApplySettings();
             }
             catch (Exception ex)
             {
@@ -236,12 +236,12 @@ namespace SqlToCSharp.Forms
         {
             try
             {
-                grpCSharpCode.Text = "Simple Typed Datatable";
+                tabPage1.Text = "Simple Typed Datatable";
                 if (creator != null)
                     creator = null;
 
                 creator = new TypedDatatableCreator();
-                creatorSettings.ApplySettings();
+                classGeneratorSetting.ApplySettings();
             }
             catch (Exception ex)
             {
@@ -282,6 +282,11 @@ namespace SqlToCSharp.Forms
             {
                 ErrorViewerForm.ShowError(ex, this);
             }
+        }
+
+        private void dbTreeView_SelectedNodeChanged(object sender, TreeViewEventArgs e)
+        {
+            classGeneratorSetting.ResetSettingsToDefault();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace SqlToCSharp.Forms
         {
             tvError.Nodes.Add(GetTreeNode(exWrap));
             tvError.ExpandAll();
-            tvError.SelectedNode = tvError.Nodes[0];
+            tvError.SelectedNode = tvError.Nodes[0].FirstNode;
         }
         private TreeNode GetTreeNode(ExceptionWrapper exWrap)
         {

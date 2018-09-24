@@ -25,6 +25,8 @@ namespace SqlToCSharp
         /// </summary>
         public event EventHandler GenerateTypedDatatable;
 
+        public event TreeViewEventHandler SelectedNodeChanged;
+
         /// <summary>
         /// Server name of currennt database connection.
         /// </summary>
@@ -98,13 +100,13 @@ namespace SqlToCSharp
 
             if (n.Tag is FilterForm filterForm)
             {
-                dbObjectFilter=filterForm.FilterText;
+                dbObjectFilter = filterForm.FilterText;
                 filterType = filterForm.FilterType;
             }
 
             for (int j = 0; j < listProc.Count; j++)
             {
-                if (CanBeAdded(listProc[j][1], dbObjectFilter,filterType))
+                if (CanBeAdded(listProc[j][1], dbObjectFilter, filterType))
                 {
                     n.Nodes.Add(listProc[j][0] + "." + listProc[j][1]);
                 }
@@ -362,6 +364,11 @@ namespace SqlToCSharp
             return DBObjectType.None;
         }
 
+        public string GetSelectedNode()
+        {
+            return this.TreeView.SelectedNode.Text;
+        }
+
         private void generateCClassToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GenerateCSharpClass(sender, e);
@@ -370,6 +377,12 @@ namespace SqlToCSharp
         private void generateSimpleTypedDatatableToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GenerateTypedDatatable(sender, e);
+        }
+
+        private void tvDBItems_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (SelectedNodeChanged != null)
+                SelectedNodeChanged(sender, e);
         }
     }
 }
