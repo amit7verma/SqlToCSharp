@@ -25,6 +25,8 @@ namespace SqlToCSharp.Classes
             if (string.IsNullOrEmpty(settings.ClassName))
                 return string.Empty;
 
+            classBuilder.Clear();
+
             AppendLine("using System;");
             AppendLine("using System.Data;");
             AppendLine();

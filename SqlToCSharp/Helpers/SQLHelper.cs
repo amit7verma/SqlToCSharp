@@ -35,7 +35,7 @@ namespace SqlToCSharp.Helpers
             List<string[]> list = new List<string[]>();
 
             // Open connection to the database           
-            using (SqlConnection con = new SqlConnection(this._dbConnString))
+            using (SqlConnection con = new SqlConnection(_dbConnString))
             {
                 con.Open();
 
@@ -74,7 +74,7 @@ namespace SqlToCSharp.Helpers
         {
             List<string[]> list = new List<string[]>();
 
-            using (SqlConnection con = new SqlConnection(this._dbConnString))
+            using (SqlConnection con = new SqlConnection(_dbConnString))
             {
                 con.Open();
 
@@ -113,7 +113,7 @@ namespace SqlToCSharp.Helpers
         {
             List<string[]> list = new List<string[]>();
 
-            using (SqlConnection con = new SqlConnection(this._dbConnString))
+            using (SqlConnection con = new SqlConnection(_dbConnString))
             {
                 con.Open();
 
@@ -152,7 +152,7 @@ namespace SqlToCSharp.Helpers
         {
             List<string[]> list = new List<string[]>();
 
-            using (SqlConnection con = new SqlConnection(this._dbConnString))
+            using (SqlConnection con = new SqlConnection(_dbConnString))
             {
                 con.Open();
 
@@ -193,7 +193,7 @@ namespace SqlToCSharp.Helpers
         {
             List<string[]> list = new List<string[]>();
 
-            using (SqlConnection con = new SqlConnection(this._dbConnString))
+            using (SqlConnection con = new SqlConnection(_dbConnString))
             {
                 con.Open();
 
@@ -238,7 +238,7 @@ namespace SqlToCSharp.Helpers
 
             // Open connection to the database
 
-            using (SqlConnection con = new SqlConnection(this._dbConnString))
+            using (SqlConnection con = new SqlConnection(_dbConnString))
             {
                 con.Open();
 
@@ -270,7 +270,7 @@ namespace SqlToCSharp.Helpers
                 @"SELECT 1 FROM sys.procedures WHERE OBJECTPROPERTY([object_id], 'IsEncrypted') = 1 and name=@name";
             // Open connection to the database
             bool returnVal = false;
-            using (SqlConnection con = new SqlConnection(this._dbConnString))
+            using (SqlConnection con = new SqlConnection(_dbConnString))
             {
                 con.Open();
 
@@ -297,7 +297,7 @@ namespace SqlToCSharp.Helpers
             string sql = $"sp_describe_first_result_set N'{schema}.{dbObjectName}'";
             DataSet ds = new DataSet($"SP_HELP_{dbObjectName}");
             List<SqlColumn> sqlColumns = null;
-            using (SqlConnection con = new SqlConnection(this._dbConnString))
+            using (SqlConnection con = new SqlConnection(_dbConnString))
             {
                 // Set up a command with the given query and associate
                 // this with the current connection.               
@@ -328,6 +328,47 @@ namespace SqlToCSharp.Helpers
             return sqlColumns?.ToArray();
         }
 
+        private ClrProperty[] GetClrPropertyForStoredProcedure(string schema, string dbObjectName)
+        {
+            DataSet ds = new DataSet(dbObjectName);
+            List<ClrProperty> sqlColumns = null;
+            using (SqlConnection con = new SqlConnection(_dbConnString))
+            {
+                // Set up a command with the given query and associate
+                // this with the current connection.               
+                using (SqlCommand cmd = new SqlCommand(dbObjectName, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    SqlCommandBuilder.DeriveParameters(cmd);
+                    con.Close();
+                    foreach (SqlParameter p in cmd.Parameters)
+                    {
+                        p.Value = DBNull.Value;
+                    }
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(ds);
+                }
+            }
+            if (ds.Tables.Count > 0)
+            {
+                DataTable dataTable = ds.Tables[0];
+                sqlColumns = new List<ClrProperty>(dataTable.Rows.Count);
+                foreach (DataColumn dc in dataTable.Columns)
+                {
+                    sqlColumns.Add(
+                        new ClrProperty()
+                        {
+                            Name = dc.ColumnName,
+                            PropertyType = dc.DataType
+                        }
+                        );
+                }
+            }
+
+            return sqlColumns?.ToArray();
+        }
+
         /// <summary>
         /// Gets array of SqlColumn objects for specified schema and Database object name i.e. Table, Views and Table-Valued function
         /// </summary>
@@ -339,7 +380,7 @@ namespace SqlToCSharp.Helpers
             string sql = $"sp_help '{schema}.{dbObjectName}'";
             DataSet ds = new DataSet($"SP_HELP_{dbObjectName}");
             List<SqlColumn> sqlColumns = null;
-            using (SqlConnection con = new SqlConnection(this._dbConnString))
+            using (SqlConnection con = new SqlConnection(_dbConnString))
             {
                 // Set up a command with the given query and associate
                 // this with the current connection.               
@@ -396,6 +437,8 @@ namespace SqlToCSharp.Helpers
                         return SqlDbType.Timestamp;
                     case "smalldatetime":
                         return SqlDbType.DateTime;
+                    case "sysname":
+                        return SqlDbType.VarChar;
 
                     default:
                         throw new InvalidCastException($"Unable to cast '{sqlTypeName}' to appropriate SqlDbType enum.");
@@ -419,12 +462,12 @@ namespace SqlToCSharp.Helpers
 	                        ,c.is_nullable [Nullable]
                         from sys.table_types tt
                         inner join sys.columns c on c.object_id = tt.type_table_object_id
-                        INNER JOIN sys.systypes AS ST  ON ST.xtype = c.system_type_id
+                        INNER JOIN sys.systypes AS ST  ON ST.xusertype = c.user_type_id
                         where tt.name=@typeName
                         ";
             DataTable dataTable = new DataTable($"{schema}_{dbObjectName}");
             List<SqlColumn> sqlColumns = null;
-            using (SqlConnection con = new SqlConnection(this._dbConnString))
+            using (SqlConnection con = new SqlConnection(_dbConnString))
             {
                 // Set up a command with the given query and associate
                 // this with the current connection.               
@@ -445,7 +488,7 @@ namespace SqlToCSharp.Helpers
                         new SqlColumn()
                         {
                             Name = dr[0].ToString(),
-                            SqlType = GetSqlDbType( dr[1].ToString()),
+                            SqlType = GetSqlDbType(dr[1].ToString()),
                             IsNullable = Convert.ToBoolean(dr[2])
                         }
                         );
@@ -473,8 +516,8 @@ namespace SqlToCSharp.Helpers
                     sqlColumns = GetSqlColumns(schema, dbObjectName);
                     break;
                 case DBObjectType.StoredProcedure:
-                    sqlColumns = GetSqlColumnsForStoredProcedure(schema, dbObjectName);
-                    break;
+                    //sqlColumns = GetSqlColumnsForStoredProcedure(schema, dbObjectName); break;
+                    return GetClrPropertyForStoredProcedure(schema, dbObjectName);
                 case DBObjectType.UserDefinedTableTypes:
                     sqlColumns = GetSqlColumnsForTableTypes(schema, dbObjectName);
                     break;
@@ -483,7 +526,9 @@ namespace SqlToCSharp.Helpers
             }
 
             if (sqlColumns == null)
+            {
                 return null;
+            }
 
             List<ClrProperty> list = new List<ClrProperty>(sqlColumns.Length);
             foreach (var sqlCol in sqlColumns)
@@ -569,7 +614,7 @@ namespace SqlToCSharp.Helpers
                     return isNullable ? typeof(DateTimeOffset?) : typeof(DateTimeOffset);
 
                 default:
-                    throw new ArgumentOutOfRangeException("sqlType");
+                    throw new ArgumentException("Invalid SqlType", sqlType.ToString());
             }
         }
     }
