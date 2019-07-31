@@ -23,3 +23,4 @@ SqlToCSharp/obj/
 /.vs/SqlToCSharp/DesignTimeBuild/.dtbcache
 /.vs/SqlToCSharp/v15/Server/sqlite3/storage.ide-shm
 /.vs/SqlToCSharp/v15/Server/sqlite3/storage.ide-wal
+/SqlToCSharp/SqlToCSharp.csproj.user
